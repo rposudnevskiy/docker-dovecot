@@ -7,4 +7,4 @@ COPY conf /etc/dovecot
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["bash"]
+CMD ["app:start"]

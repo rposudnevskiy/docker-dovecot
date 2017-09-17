@@ -38,6 +38,11 @@ init_config() {
   sed -i -e "s,#shutdown_clients,shutdown_clients," /etc/dovecot/dovecot.conf
 }
 
+start_dovecot() {
+  # Run dovecot
+  exec /usr/sbin/dovecot -c /etc/dovecot/dovecot.conf -F
+}
+
 case ${1} in
   app:help)
     echo "Available options:"
@@ -48,13 +53,15 @@ case ${1} in
     echo " [command]        - Execute the specified command, eg. bash."
     ;;
   app:start)
+    wait_for_mysql
+    init_config
+    start_dovecot
     ;;
   app:init)
     ;;
   app:update)
     ;;
   *)
-    #wait_for_mysql
     init_config
     exec "$@"
     ;;
