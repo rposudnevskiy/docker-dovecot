@@ -34,22 +34,19 @@ init_config() {
 
   # Configure SSL
   # Change TLS/SSL dirs in default config and generate default certs
-  sed -i -e 's,^ssl_cert =.*,ssl_cert = </etc/pki/dovecot/certs/server.pem,' \
-    -e 's,^ssl_key =.*,ssl_key = </etc/pki/dovecot/certs/server.key,' \
-    /etc/dovecot/conf.d/10-ssl.confA
-  openssl req -new -x509 -nodes -days 365 \
-    -config /etc/pki/dovecot/dovecot-openssl.cnf \
-    -out /etc/pki/dovecot/certs/server.pem \
-    -keyout /etc/pki/dovecot/certs/server.key
+  sed -i -e "s,^ssl_cert =.*,ssl_cert = </etc/pki/dovecot/certs/server.pem," /etc/dovecot/conf.d/10-ssl.conf
+  sed -i -e "s,^ssl_key =.*,ssl_key = </etc/pki/dovecot/certs/server.key," /etc/dovecot/conf.d/10-ssl.conf
+  sed -i -e "s,^ssl =.*,ssl = yes," /etc/dovecot/conf.d/10-ssl.conf 
+
+  openssl req -new -x509 -nodes -days 365 -config /etc/pki/dovecot/dovecot-openssl.cnf -out /etc/pki/dovecot/certs/server.pem -keyout /etc/pki/dovecot/certs/server.key
 
   chmod 0600 /etc/pki/dovecot/certs/server.key
 
   # Tweak TLS/SSL settings to achieve A grade
-  sed -i -e 's,^#ssl_prefer_server_ciphers =.*,ssl_prefer_server_ciphers = yes,' \
-    -e 's,^#ssl_cipher_list =.*,ssl_cipher_list = ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:!DSS,' \
-    -e 's,^#ssl_protocols =.*,ssl_protocols = !SSLv3,' \
-    -e 's,^#ssl_dh_parameters_length =.*,ssl_dh_parameters_length = 2048,' \
-    /etc/dovecot/conf.d/10-ssl.conf
+  sed -i -e "s,^#ssl_prefer_server_ciphers =.*,ssl_prefer_server_ciphers = yes," /etc/dovecot/conf.d/10-ssl.conf
+  sed -i -e "s,^#ssl_cipher_list =.*,ssl_cipher_list = ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:!DSS," /etc/dovecot/conf.d/10-ssl.conf
+  sed -i -e "s,^#ssl_protocols =.*,ssl_protocols = !SSLv3," /etc/dovecot/conf.d/10-ssl.conf
+  sed -i -e "s,^#ssl_dh_parameters_length =.*,ssl_dh_parameters_length = 2048," /etc/dovecot/conf.d/10-ssl.conf
 
   # Pregenerate Diffie-Hellman parameters (heavy operation) # to not consume time at container start
   mkdir -p /var/lib/dovecot
