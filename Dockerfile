@@ -1,6 +1,6 @@
 FROM centos:latest
 
-RUN yum install -y dovecot dovecot-mysql
+RUN yum install -y dovecot dovecot-mysql mariadb
 
 COPY conf /etc/dovecot
 
