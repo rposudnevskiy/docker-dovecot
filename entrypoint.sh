@@ -36,7 +36,7 @@ init_config() {
   # Change TLS/SSL dirs in default config and generate default certs
   sed -i -e "s,^ssl_cert =.*,ssl_cert = </etc/pki/dovecot/certs/server.pem," /etc/dovecot/conf.d/10-ssl.conf
   sed -i -e "s,^ssl_key =.*,ssl_key = </etc/pki/dovecot/certs/server.key," /etc/dovecot/conf.d/10-ssl.conf
-  sed -i -e "s,^ssl =.*,ssl = yes," /etc/dovecot/conf.d/10-ssl.conf 
+  sed -i -e "s,^ssl =.*,ssl = required," /etc/dovecot/conf.d/10-ssl.conf 
 
   openssl req -new -x509 -nodes -days 365 -config /etc/pki/dovecot/dovecot-openssl.cnf -out /etc/pki/dovecot/certs/server.pem -keyout /etc/pki/dovecot/certs/server.key
 
