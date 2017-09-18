@@ -35,6 +35,11 @@ init_config() {
   # Configure Mailboxes location
   sed -i -e "s,#mail_location =,mail_location = maildir:/var/mail/%d/%n," /etc/dovecot/conf.d/10-mail.conf
 
+  # Set logging to STDOUT/STDERR
+  sed -i -e 's,#log_path = syslog,log_path = /dev/stderr,' /etc/dovecot/conf.d/10-logging.conf
+  sed -i -e 's,#info_log_path =,info_log_path = /dev/stdout,' /etc/dovecot/conf.d/10-logging.conf
+  sed -i -e 's,#debug_log_path =,debug_log_path = /dev/stdout,' /etc/dovecot/conf.d/10-logging.conf
+
   # Configure SSL
   # Change TLS/SSL dirs in default config and generate default certs
   sed -i -e "s,^ssl_cert =.*,ssl_cert = </etc/pki/dovecot/certs/server.pem," /etc/dovecot/conf.d/10-ssl.conf
