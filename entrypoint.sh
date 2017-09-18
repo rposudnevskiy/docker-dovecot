@@ -32,6 +32,9 @@ init_config() {
   sed -i -e "s,#\!include auth-sql.conf.ext,\!include auth-sql.conf.ext," /etc/dovecot/conf.d/10-auth.conf
   sed -i -e "s,auth_mechanisms = plain,auth_mechanisms = plain login cram-md5," /etc/dovecot/conf.d/10-auth.conf
 
+  # Configure Mailboxes location
+  sed -i -e "s,#mail_location =,mail_location = maildir:/var/mail/%d/%n," /etc/dovecot/conf.d/10-mail.conf
+
   # Configure SSL
   # Change TLS/SSL dirs in default config and generate default certs
   sed -i -e "s,^ssl_cert =.*,ssl_cert = </etc/pki/dovecot/certs/server.pem," /etc/dovecot/conf.d/10-ssl.conf

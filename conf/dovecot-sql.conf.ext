@@ -2,6 +2,4 @@ driver = mysql
 connect = host=#MYSQL_HOST# dbname=#MYSQL_DATABASE# user=#MYSQL_USER# password=#MYSQL_PASSWORD#
 default_pass_scheme = CRAM-MD5
 password_query = SELECT username as user, password FROM mailbox WHERE username = '%u'
-#Еще один хинт, без которого ничего не взлетит. Почему-то неправильно определяется home
-#И из-за этого не создавалась папка пользователя.
-user_query = SELECT concat('/var/vmail/',`maildir`) AS `home`, 5000 as uid, 5000 as gid FROM mailbox WHERE username = '%u'
+user_query = SELECT concat('/var/mail/',`maildir`) AS `home`, 5000 as uid, 5000 as gid FROM mailbox WHERE username = '%u'
